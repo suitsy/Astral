@@ -3,3 +3,7 @@
 
 #include "AstralGameModeBase.h"
 
+AAstralGameModeBase::AAstralGameModeBase()
+{
+	
+}

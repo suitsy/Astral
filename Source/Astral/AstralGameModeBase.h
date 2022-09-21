@@ -13,5 +13,9 @@ UCLASS()
 class ASTRAL_API AAstralGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+
+	AAstralGameModeBase();
 	
 };
