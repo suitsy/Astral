@@ -12,16 +12,21 @@ AAA_PlayerPawn::AAA_PlayerPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Character = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Character"));
-	RootComponent = Character;
+	PlayerAnchor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Anchor"));
+	RootComponent = PlayerAnchor;
+	PlayerAnchor->SetSimulatePhysics(false);
+
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	//Mesh->SetupAttachment(RootComponent);	
+	Mesh->SetSimulatePhysics(false);
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
-	SpringArmComponent->SetupAttachment(RootComponent);
+	SpringArmComponent->SetupAttachment(Mesh);
 	SpringArmComponent->TargetArmLength = 500.0f;
 	SpringArmComponent->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f));
-	SpringArmComponent->bInheritPitch = true;
-	SpringArmComponent->bInheritYaw = true;
-	SpringArmComponent->bInheritRoll = true;
+	SpringArmComponent->bInheritPitch = false;
+	SpringArmComponent->bInheritYaw = false;
+	SpringArmComponent->bInheritRoll = false;
 	SpringArmComponent->bEnableCameraLag = false;
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
@@ -29,7 +34,7 @@ AAA_PlayerPawn::AAA_PlayerPawn()
 
 	ForwardForce = 2000;
 	MaxVelocity = 500;
-	SidewaysForce = 25;
+	SidewaysForce = 0.001;
 	bLevelAttemptStarted = false;
 	bMoveRight = false;
 	bMoveLeft = false;
@@ -42,7 +47,8 @@ void AAA_PlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	bLevelAttemptStarted = true;
+	bLevelAttemptStarted = true;	
+	PlayerAnchor->SetSimulatePhysics(true);
 }
 
 void AAA_PlayerPawn::MoveRight(float AxisValue)
@@ -52,12 +58,13 @@ void AAA_PlayerPawn::MoveRight(float AxisValue)
 		if(AxisValue != 0.f)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("MoveDown: %f"), AxisValue);
-			Character->AddImpulse(FVector(0.f, (SidewaysForce * Character->GetMass())* DeltaSeconds * AxisValue, 0.f), NAME_None, true);		
+			//PlayerAnchor->AddImpulse(FVector(0.f, (SidewaysForce * Mesh->GetMass())* DeltaSeconds * AxisValue, 0.f), NAME_None, true);
+			FVector CurrentOffset = Mesh->GetRelativeLocation();
+			Mesh->SetRelativeLocation(CurrentOffset + FVector(0.f,SidewaysForce * AxisValue * DeltaSeconds,0.f) );
 		}
 	}
 
-	bMoveRight = AxisValue > 0.f ? true : false;
-	bMoveLeft = AxisValue < 0.f ? true : false;
+	
 }
 
 void AAA_PlayerPawn::MoveUp(float AxisValue)
@@ -67,12 +74,25 @@ void AAA_PlayerPawn::MoveUp(float AxisValue)
 		if(AxisValue != 0.f)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("MoveUp: %f"), AxisValue);
-			Character->AddImpulse(FVector(0.f, 0.f, (SidewaysForce * Character->GetMass())* DeltaSeconds * AxisValue), NAME_None, true);		
+			//PlayerAnchor->AddImpulse(FVector(0.f, 0.f, (SidewaysForce * Mesh->GetMass())* DeltaSeconds * AxisValue), NAME_None, true);
+			FVector CurrentOffset = Mesh->GetRelativeLocation();
+			Mesh->SetRelativeLocation(CurrentOffset + FVector(0.f,0.f,SidewaysForce * AxisValue * DeltaSeconds) );
 		}
 	}
-	
-	bMoveUp = AxisValue > 0.f ? true : false;
-	bMoveDown = AxisValue < 0.f ? true : false;
+}
+
+void AAA_PlayerPawn::Roll(float AxisValue)
+{
+	if(bLevelAttemptStarted)
+	{
+		if(AxisValue != 0.f)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("MoveUp: %f"), AxisValue);
+			//PlayerAnchor->AddImpulse(FVector(0.f, 0.f, (SidewaysForce * Mesh->GetMass())* DeltaSeconds * AxisValue), NAME_None, true);
+			FRotator CurrentRotation = Mesh->GetRelativeRotation();
+			Mesh->SetRelativeRotation(CurrentRotation + FRotator(SidewaysForce * AxisValue * DeltaSeconds,0.f,0.f) );
+		}
+	}
 }
 
 void AAA_PlayerPawn::MouseX(float AxisValue)
@@ -80,7 +100,7 @@ void AAA_PlayerPawn::MouseX(float AxisValue)
 	if(AxisValue != 0.f)
 	{
 		FRotator XRotation = FRotator(0.f,AxisValue * DeltaSeconds * (SidewaysForce * 4),0.f);
-		Character->SetRelativeRotation(UKismetMathLibrary::ComposeRotators(Character->GetRelativeRotation(),XRotation));
+		//PlayerAnchor->SetRelativeRotation(UKismetMathLibrary::ComposeRotators(PlayerAnchor->GetRelativeRotation(),XRotation));
 	}	
 }
 
@@ -88,8 +108,8 @@ void AAA_PlayerPawn::MouseY(float AxisValue)
 {
 	if(AxisValue != 0.f)
 	{
-		FRotator XRotation = FRotator(AxisValue * DeltaSeconds * (SidewaysForce * 4),0.f,0.f);		
-		Character->SetRelativeRotation(UKismetMathLibrary::ComposeRotators(Character->GetRelativeRotation(),XRotation));
+		FRotator YRotation = FRotator(0.f,0.f,AxisValue * DeltaSeconds * (SidewaysForce * 4));		
+		//PlayerAnchor->SetRelativeRotation(UKismetMathLibrary::ComposeRotators(PlayerAnchor->GetRelativeRotation(),YRotation));
 	}	
 }
 
@@ -102,13 +122,12 @@ void AAA_PlayerPawn::Tick(float DeltaTime)
 
 	if(bLevelAttemptStarted)
 	{
-		FVector Forward = Character->GetForwardVector();
-		FVector Velocity = Forward * (ForwardForce * Character->GetMass()) * DeltaTime;
-		UE_LOG(LogTemp, Warning, TEXT("Velocity: %s"), *Velocity.ToString());
-		//Character->AddImpulse(Velocity, NAME_None, false);
+		FVector Forward = PlayerAnchor->GetForwardVector();
+		FVector Velocity = Forward * (ForwardForce * PlayerAnchor->GetMass()) * DeltaTime;
+		PlayerAnchor->AddImpulse(Velocity, NAME_None, false);
 		if(Velocity.Size() > MaxVelocity)
 		{
-			Character->SetPhysicsLinearVelocity(Velocity * MaxVelocity/Velocity.Size());
+			PlayerAnchor->SetPhysicsLinearVelocity(Velocity * MaxVelocity/Velocity.Size());
 		}		
 	}
 }
@@ -120,6 +139,7 @@ void AAA_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	
 	PlayerInputComponent->BindAxis("MoveRight", this, &AAA_PlayerPawn::MoveRight);
 	PlayerInputComponent->BindAxis("MoveUp", this, &AAA_PlayerPawn::MoveUp);
+	PlayerInputComponent->BindAxis("Roll", this, &AAA_PlayerPawn::Roll);
 	PlayerInputComponent->BindAxis("MouseX", this, &AAA_PlayerPawn::MouseX);
 	PlayerInputComponent->BindAxis("MouseY", this, &AAA_PlayerPawn::MouseY);
 }

@@ -34,6 +34,9 @@ protected:
 	void MoveUp(float AxisValue);
 
 	UFUNCTION()
+	void Roll(float AxisValue);
+
+	UFUNCTION()
 	void MouseX(float AxisValue);
 
 	UFUNCTION()
@@ -42,7 +45,10 @@ protected:
 	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UStaticMeshComponent* Character;	
+	USceneComponent* Player;	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UStaticMeshComponent* PlayerAnchor;	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* Mesh;
@@ -59,10 +65,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float MaxVelocity;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float SidewaysForce;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 	float DeltaSeconds;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
