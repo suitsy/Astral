@@ -34,15 +34,7 @@ protected:
 	void MoveUp(float AxisValue);
 
 	UFUNCTION()
-	void Roll(float AxisValue);
-
-	UFUNCTION()
-	void MouseX(float AxisValue);
-
-	UFUNCTION()
-	void MouseY(float AxisValue);
-
-	
+	void Roll(float AxisValue);	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* Player;	

@@ -4,7 +4,6 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AAA_PlayerPawn::AAA_PlayerPawn()
@@ -17,7 +16,6 @@ AAA_PlayerPawn::AAA_PlayerPawn()
 	PlayerAnchor->SetSimulatePhysics(false);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	//Mesh->SetupAttachment(RootComponent);	
 	Mesh->SetSimulatePhysics(false);
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
@@ -93,24 +91,6 @@ void AAA_PlayerPawn::Roll(float AxisValue)
 			Mesh->SetRelativeRotation(CurrentRotation + FRotator(SidewaysForce * AxisValue * DeltaSeconds,0.f,0.f) );
 		}
 	}
-}
-
-void AAA_PlayerPawn::MouseX(float AxisValue)
-{
-	if(AxisValue != 0.f)
-	{
-		FRotator XRotation = FRotator(0.f,AxisValue * DeltaSeconds * (SidewaysForce * 4),0.f);
-		//PlayerAnchor->SetRelativeRotation(UKismetMathLibrary::ComposeRotators(PlayerAnchor->GetRelativeRotation(),XRotation));
-	}	
-}
-
-void AAA_PlayerPawn::MouseY(float AxisValue)
-{
-	if(AxisValue != 0.f)
-	{
-		FRotator YRotation = FRotator(0.f,0.f,AxisValue * DeltaSeconds * (SidewaysForce * 4));		
-		//PlayerAnchor->SetRelativeRotation(UKismetMathLibrary::ComposeRotators(PlayerAnchor->GetRelativeRotation(),YRotation));
-	}	
 }
 
 // Called every frame
