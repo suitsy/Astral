@@ -67,4 +67,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
 	TArray<UAA_SpawnerComponent*> Spawners;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FVector LastSplinePoint;
 };
