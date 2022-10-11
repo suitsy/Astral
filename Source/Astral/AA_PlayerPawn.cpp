@@ -32,7 +32,7 @@ AAA_PlayerPawn::AAA_PlayerPawn()
 
 	ForwardForce = 2000;
 	MaxVelocity = 500;
-	SidewaysForce = 0.001;
+	SidewaysForce = 1;
 	bLevelAttemptStarted = false;
 	bMoveRight = false;
 	bMoveLeft = false;
