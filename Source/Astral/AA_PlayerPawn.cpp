@@ -120,7 +120,5 @@ void AAA_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("MoveRight", this, &AAA_PlayerPawn::MoveRight);
 	PlayerInputComponent->BindAxis("MoveUp", this, &AAA_PlayerPawn::MoveUp);
 	PlayerInputComponent->BindAxis("Roll", this, &AAA_PlayerPawn::Roll);
-	PlayerInputComponent->BindAxis("MouseX", this, &AAA_PlayerPawn::MouseX);
-	PlayerInputComponent->BindAxis("MouseY", this, &AAA_PlayerPawn::MouseY);
 }
 

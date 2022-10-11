@@ -34,10 +34,7 @@ protected:
 	void MoveUp(float AxisValue);
 
 	UFUNCTION()
-	void Roll(float AxisValue);	
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USceneComponent* Player;	
+	void Roll(float AxisValue);		
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* PlayerAnchor;	

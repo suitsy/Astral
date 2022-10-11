@@ -7,6 +7,9 @@
 #include "GameFramework/Actor.h"
 #include "AA_Tube.generated.h"
 
+class UAA_SpawnerComponent;
+class UBoxComponent;
+
 UCLASS()
 class ASTRAL_API AAA_Tube : public AActor
 {
@@ -16,16 +19,52 @@ public:
 	// Sets default values for this actor's properties
 	AAA_Tube();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UStaticMeshComponent* TubeMesh;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	USphereComponent* AttachPoint;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UBoxComponent* EndTrigger;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UBoxComponent* StartTrigger;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner1;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner2;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner3;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner4;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner5;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner6;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner7;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner8;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner9;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UAA_SpawnerComponent* Spawner10;
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override; 
+	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
+	TArray<UAA_SpawnerComponent*> Spawners;
 };
