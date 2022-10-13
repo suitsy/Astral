@@ -34,7 +34,16 @@ protected:
 	void MoveUp(float AxisValue);
 
 	UFUNCTION()
-	void Roll(float AxisValue);		
+	void Roll(float AxisValue);	
+
+	UFUNCTION()
+	void Shoot();	
+
+	UFUNCTION(BlueprintCallable)
+	void Damage(int Amount);		
+
+	UFUNCTION(BlueprintNativeEvent)
+	void Die();		
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* PlayerAnchor;	
@@ -60,8 +69,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 	float DeltaSeconds;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	bool bLevelAttemptStarted;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	int Health;
 
 private:
 

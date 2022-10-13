@@ -33,6 +33,7 @@ AAA_PlayerPawn::AAA_PlayerPawn()
 	ForwardForce = 2000;
 	MaxVelocity = 500;
 	SidewaysForce = 1;
+	Health = 100;
 	bLevelAttemptStarted = false;
 	bMoveRight = false;
 	bMoveLeft = false;
@@ -46,7 +47,13 @@ void AAA_PlayerPawn::BeginPlay()
 	Super::BeginPlay();
 
 	bLevelAttemptStarted = true;	
+	Health = 100;
 	PlayerAnchor->SetSimulatePhysics(true);
+
+	if(APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		PC->EnableInput(PC);
+	}
 }
 
 void AAA_PlayerPawn::MoveRight(float AxisValue)
@@ -61,8 +68,6 @@ void AAA_PlayerPawn::MoveRight(float AxisValue)
 			Mesh->SetRelativeLocation(CurrentOffset + FVector(0.f,SidewaysForce * AxisValue * DeltaSeconds,0.f) );
 		}
 	}
-
-	
 }
 
 void AAA_PlayerPawn::MoveUp(float AxisValue)
@@ -93,6 +98,25 @@ void AAA_PlayerPawn::Roll(float AxisValue)
 	}
 }
 
+void AAA_PlayerPawn::Shoot()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Blue, TEXT("Shoot"));
+}
+
+void AAA_PlayerPawn::Damage(int Amount)
+{	
+	Health = FMath::Clamp(Health -= Amount, 0, 100);
+	if(Health <= 0)
+	{
+		Die();
+	}
+}
+
+void AAA_PlayerPawn::Die_Implementation()
+{
+	
+}
+
 // Called every frame
 void AAA_PlayerPawn::Tick(float DeltaTime)
 {
@@ -110,6 +134,8 @@ void AAA_PlayerPawn::Tick(float DeltaTime)
 			PlayerAnchor->SetPhysicsLinearVelocity(Velocity * MaxVelocity/Velocity.Size());
 		}		
 	}
+
+	
 }
 
 // Called to bind functionality to input
@@ -120,5 +146,5 @@ void AAA_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("MoveRight", this, &AAA_PlayerPawn::MoveRight);
 	PlayerInputComponent->BindAxis("MoveUp", this, &AAA_PlayerPawn::MoveUp);
 	PlayerInputComponent->BindAxis("Roll", this, &AAA_PlayerPawn::Roll);
+	PlayerInputComponent->BindAction("Shoot", EInputEvent::IE_Pressed, this, &AAA_PlayerPawn::Shoot);
 }
-
