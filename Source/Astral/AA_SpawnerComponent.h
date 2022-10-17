@@ -8,7 +8,7 @@
 class USphereComponent;
 
 UENUM(BlueprintType)
-enum ESpawnType { Enemy, Obstacle };
+enum ESpawnType { Enemy, Obstacle, Fuel, Other };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ASTRAL_API UAA_SpawnerComponent : public USceneComponent

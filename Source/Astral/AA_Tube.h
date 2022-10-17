@@ -3,10 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AA_Spawnable.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "AA_Tube.generated.h"
 
+class AAA_EnemyPawn;
+class AAA_Obstacle;
 class UAA_SpawnerComponent;
 class UBoxComponent;
 
@@ -67,6 +70,12 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
 	TArray<UAA_SpawnerComponent*> Spawners;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
+	TArray<AAA_Spawnable*> Spawnables;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
+	TArray<AAA_EnemyPawn*> SpawnedEnemies;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector LastSplinePoint;
