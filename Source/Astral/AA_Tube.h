@@ -71,10 +71,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
 	TArray<UAA_SpawnerComponent*> Spawners;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
+	UPROPERTY(BlueprintReadWrite, BlueprintReadWrite, Category = "Settings")
 	TArray<AAA_Spawnable*> Spawnables;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Settings")
+	UPROPERTY(BlueprintReadWrite, BlueprintReadWrite, Category = "Settings")
 	TArray<AAA_EnemyPawn*> SpawnedEnemies;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
