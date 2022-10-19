@@ -124,7 +124,7 @@ void AAA_PlayerPawn::Tick(float DeltaTime)
 
 	DeltaSeconds = DeltaTime;
 
-	if(bLevelAttemptStarted)
+	/*if(bLevelAttemptStarted)
 	{
 		FVector Forward = PlayerAnchor->GetForwardVector();
 		FVector Velocity = Forward * (ForwardForce * PlayerAnchor->GetMass()) * DeltaTime;
@@ -133,9 +133,7 @@ void AAA_PlayerPawn::Tick(float DeltaTime)
 		{
 			PlayerAnchor->SetPhysicsLinearVelocity(Velocity * MaxVelocity/Velocity.Size());
 		}		
-	}
-
-	
+	}*/
 }
 
 // Called to bind functionality to input
