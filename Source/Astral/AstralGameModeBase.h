@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "AstralGameModeBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartTimer);
+
 /**
  * 
  */
@@ -17,5 +19,4 @@ class ASTRAL_API AAstralGameModeBase : public AGameModeBase
 public:
 
 	AAstralGameModeBase();
-	
 };
